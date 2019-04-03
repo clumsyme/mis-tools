@@ -25,45 +25,55 @@ function onSelectStartModules() {
         {
             label: '销售',
             detail: '启动销售相关模块',
+            description: 'sales',
         },
         {
             label: '公共',
             detail: '启动公共相关模块',
+            description: 'common',
         },
         {
             label: '实施',
             detail: '启动实施相关模块',
+            description: 'implement',
         },
         {
             label: '报表',
             detail: '启动报表相关模块',
+            description: 'report',
         },
         {
             label: '基础',
             detail: '启动基础相关模块（人事、群组、权限等）',
+            description: 'basic',
         },
         {
             label: '学堂',
             detail: '启动学堂相关模块',
+            description: 'school',
         },
     ];
     quickPick.onDidAccept(function () {
         let selectedItem = quickPick.activeItems[0];
         if (selectedItem) {
+            let ternimalCommand = 'npm start';
+            if (selectedItem.description) {
+                ternimalCommand += ' -- modules=' + selectedItem.description;
+            }
             quickPick.hide();
             let terminal = showTerminal(NPM_TREMINAL_NAME);
-            terminal.sendText(`npm start -- modules=${selectedItem.detail}`);
+            terminal.sendText(ternimalCommand);
         }
     });
     quickPick.show();
 }
 function showTerminal(terminalName) {
-    let terminal = window.terminals.filter((ternimal) => terminal.name === terminalName);
-    if (!terminal) {
-        terminal = window.createTerminal(terminalName);
+    let mainTerminal = window.terminals.filter((terminal) => terminal.name === terminalName)[0];
+    if (!mainTerminal) {
+        mainTerminal = window.createTerminal(terminalName);
     }
-    terminal.show();
-    return terminal;
+    mainTerminal.show();
+    return mainTerminal;
 }
 // this method is called when your extension is deactivated
 function deactivate() { }
