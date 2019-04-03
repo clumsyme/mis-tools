@@ -1,6 +1,7 @@
 {
   "name": "mis-tools",
-  "version": "0.1.1",
+  "version": "0.1.2",
+  "icon": "images/logo.jpg",
   "description": "Tools for mis",
   "repository": "https://github.com/clumsyme/mis-tools",
   "main": "./out/mis-tools.js",
@@ -9,7 +10,7 @@
     "vscode": "^1.25.0"
   },
   "activationEvents": [
-    "*"
+    "workspaceContains:**/mis-web-react"
   ],
   "contributes": {
     "commands": [
