@@ -6,7 +6,7 @@ const window = vscode.window
 
 export function addToolButton(context: vscode.ExtensionContext) {
     let toolBarItem = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 101)
-    toolBarItem.text = '跳房子工具'
+    toolBarItem.text = '$(tools) 跳房子工具'
     toolBarItem.command = 'misTools.selectTools'
     toolBarItem.show()
 

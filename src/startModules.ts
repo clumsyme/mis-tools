@@ -6,7 +6,7 @@ const NPM_TREMINAL_NAME = '跳房子'
 
 export function addMisButton(context: vscode.ExtensionContext) {
     let startBarItem = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100)
-    startBarItem.text = '启动跳房子'
+    startBarItem.text = '$(rocket) 启动跳房子'
     startBarItem.command = 'misTools.selectStartModules'
     startBarItem.show()
 
