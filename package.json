@@ -1,0 +1,32 @@
+{
+  "name": "mis-tools",
+  "version": "0.1.0",
+  "description": "Tools for mis",
+  "repository": "https://github.com/clumsyme/mis-tools",
+  "main": "./out/mis-tools.js",
+  "publisher": "Yan",
+  "engines": {
+    "vscode": "^1.25.0"
+  },
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "commands": [
+        {
+            "command": "misTools.selectStartModules",
+            "title": "选择要启动的模块"
+        }
+    ]
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc -p ./"
+  },
+  "author": "Li Yan",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.4.1",
+    "vscode": "^1.1.33"
+  }
+}
