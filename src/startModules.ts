@@ -62,7 +62,7 @@ function onSelectStartModules() {
             if (selectedItem.description) {
                 ternimalCommand += ' -- modules=' + selectedItem.description
             }
-            quickPick.hide()
+            quickPick.dispose()
             let terminal = showTerminal(NPM_TREMINAL_NAME)
             terminal.sendText(ternimalCommand)
         }

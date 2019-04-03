@@ -30,9 +30,9 @@ function onSelectTools() {
         if (selectedItem) {
             if (selectedItem.detail === 'format') {
                 onFormat()
+                quickPick.dispose()
             }
         }
-        quickPick.hide()
     })
 
     quickPick.show()
