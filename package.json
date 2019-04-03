@@ -1,7 +1,7 @@
 {
   "name": "mis-tools",
   "version": "0.1.2",
-  "icon": "images/logo.jpg",
+  "icon": "images/logo.png",
   "description": "Tools for mis",
   "repository": "https://github.com/clumsyme/mis-tools",
   "main": "./out/mis-tools.js",
