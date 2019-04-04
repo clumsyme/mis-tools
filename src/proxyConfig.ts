@@ -102,7 +102,7 @@ export function onSelectProxy() {
     ].concat(
         Object.entries(PROXY).map(([proxyIP, proxyName]) => {
             let item = {
-                label: `$(device-desktop) ${proxyName}`,
+                label: `$(person-filled) ${proxyName}`,
                 detail: proxyIP,
             }
 
