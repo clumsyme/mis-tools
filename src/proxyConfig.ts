@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import * as fs from 'fs'
 import * as path from 'path'
-
+import { updateToolBarText } from './tools'
 
 const window = vscode.window
 
@@ -35,7 +35,7 @@ type CurrentProxy = {
 }
 
 const REG = new RegExp(/[^\/]proxy:['"](.*?)['"]/)
-function getCurrentProxy(): null | CurrentProxy {
+export function getCurrentProxy(): null | CurrentProxy {
     let fileContent = fs
         .readFileSync(CONFIG_FILE)
         .toString()
@@ -70,6 +70,7 @@ function setCurrentProxy(proxyIP: string) {
         newFileContent = fileContent.replace('{', `{\nproxy:'${proxyIP}',`)
     }
     fs.writeFileSync(CONFIG_FILE, newFileContent)
+    updateToolBarText()
     return newFileContent
 }
 

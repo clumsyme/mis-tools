@@ -4,9 +4,10 @@ const vscode = require("vscode");
 const format_1 = require("./format");
 const proxyConfig_1 = require("./proxyConfig");
 const window = vscode.window;
+let toolBarItem;
 function addToolButton(context) {
-    let toolBarItem = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 101);
-    toolBarItem.text = '$(tools) 跳房子工具';
+    toolBarItem = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 101);
+    updateToolBarText();
     toolBarItem.command = 'misTools.selectTools';
     toolBarItem.show();
     context.subscriptions.push(toolBarItem);
@@ -15,6 +16,13 @@ function addToolButton(context) {
     context.subscriptions.push(vscode.commands.registerCommand('misTools.customProxy', proxyConfig_1.onCustomProxy));
 }
 exports.addToolButton = addToolButton;
+function updateToolBarText() {
+    let currentProxyName = proxyConfig_1.getCurrentProxy().currentProxyName;
+    let currentProxyIP = proxyConfig_1.getCurrentProxy().currentProxyIP;
+    toolBarItem.text = `$(tools) 跳房子工具(虚拟机：${currentProxyName})`;
+    toolBarItem.tooltip = currentProxyIP;
+}
+exports.updateToolBarText = updateToolBarText;
 function onSelectTools() {
     let quickPick = window.createQuickPick();
     quickPick.items = [
