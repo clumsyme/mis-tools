@@ -85,6 +85,7 @@ export function onCustomProxy() {
             window.showWarningMessage('请输入正确的虚拟机地址格式')
         }
     })
+    inputBox.prompt = '输入要连接的后端虚拟机 IP 及端口号'
     inputBox.show()
 }
 
