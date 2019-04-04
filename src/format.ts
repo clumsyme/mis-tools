@@ -1,7 +1,6 @@
 import * as vscode from 'vscode'
 import { execSync } from 'child_process'
 
-// vscode.window.activeTextEditor.document.fileName
 
 export function onFormat() {
     let currentFilePath

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import * as fs from 'fs'
 import * as path from 'path'
-import { type } from 'os';
+
 
 const window = vscode.window
 
@@ -36,9 +36,12 @@ type CurrentProxy = {
 
 const REG = new RegExp(/[^\/]proxy:['"](.*?)['"]/)
 function getCurrentProxy(): null | CurrentProxy {
-    let fileContent = fs.readFileSync(CONFIG_FILE).toString().replace(/[ ]/gm, '')
+    let fileContent = fs
+        .readFileSync(CONFIG_FILE)
+        .toString()
+        .replace(/[ ]/gm, '')
     let result: null | RegExpExecArray
-    if (result = REG.exec(fileContent)) {
+    if ((result = REG.exec(fileContent))) {
         let currentProxyIP = result[1]
         let currentProxyName = PROXY[currentProxyIP] || currentProxyIP
         return {
@@ -52,10 +55,13 @@ function getCurrentProxy(): null | CurrentProxy {
     }
 }
 function setCurrentProxy(proxyIP: string) {
-    let fileContent = fs.readFileSync(CONFIG_FILE).toString().replace(/[ ]/gm, '')
+    let fileContent = fs
+        .readFileSync(CONFIG_FILE)
+        .toString()
+        .replace(/[ ]/gm, '')
     let result: null | RegExpExecArray
     let newFileContent: string
-    if (result = REG.exec(fileContent)) {
+    if ((result = REG.exec(fileContent))) {
         let matched = result[0]
         let currentProxyIP = result[1]
         let replacedMatched = matched.replace(currentProxyIP, proxyIP)
@@ -66,31 +72,55 @@ function setCurrentProxy(proxyIP: string) {
     fs.writeFileSync(CONFIG_FILE, newFileContent)
     return newFileContent
 }
-function show(msg) {
-    window.showInformationMessage(msg)
+
+export function onCustomProxy() {
+    let inputBox = window.createInputBox()
+    inputBox.placeholder = '格式：172.16.32.31:8083'
+    inputBox.onDidAccept(function() {
+        let value = inputBox.value.replace(' ', '')
+        if (/[\d]+\.[\d]+\.[\d]+\.[\d]+:[\d]+/.test(value)) {
+            setCurrentProxy(inputBox.value)
+            inputBox.dispose()
+        } else {
+            window.showWarningMessage('请输入正确的虚拟机地址格式')
+        }
+    })
+    inputBox.show()
 }
+
 export function onSelectProxy() {
     let currentProxyIP = getCurrentProxy().currentProxyIP
     let quickPick = window.createQuickPick()
 
     let selectedItem: vscode.QuickPickItem
-    quickPick.items = Object.entries(PROXY).map(([proxyIP, proxyName]) => {
-        let item = {
-            label: proxyName,
-            detail: proxyIP,
-        }
-        console.warn(proxyIP === currentProxyIP)
-        if (proxyIP === currentProxyIP) {
-            selectedItem = item
-        }
-        return item
-    })
+    let items = [
+        {
+            label: '$(gear) 自定义',
+            detail: 'custom',
+        },
+    ].concat(
+        Object.entries(PROXY).map(([proxyIP, proxyName]) => {
+            let item = {
+                label: `$(device-desktop) ${proxyName}`,
+                detail: proxyIP,
+            }
 
+            if (proxyIP === currentProxyIP) {
+                selectedItem = item
+            }
+            return item
+        }),
+    )
+    quickPick.items = items
     quickPick.selectedItems = [selectedItem]
     quickPick.activeItems = [selectedItem]
     quickPick.onDidAccept(function() {
         let selectedItem = quickPick.activeItems[0]
-        setCurrentProxy(selectedItem.detail)
+        if (selectedItem.detail === 'custom') {
+            onCustomProxy()
+        } else {
+            setCurrentProxy(selectedItem.detail)
+        }
         quickPick.dispose()
     })
 

@@ -28,9 +28,12 @@ const PROXY = {
 };
 const REG = new RegExp(/[^\/]proxy:['"](.*?)['"]/);
 function getCurrentProxy() {
-    let fileContent = fs.readFileSync(CONFIG_FILE).toString().replace(/[ ]/gm, '');
+    let fileContent = fs
+        .readFileSync(CONFIG_FILE)
+        .toString()
+        .replace(/[ ]/gm, '');
     let result;
-    if (result = REG.exec(fileContent)) {
+    if ((result = REG.exec(fileContent))) {
         let currentProxyIP = result[1];
         let currentProxyName = PROXY[currentProxyIP] || currentProxyIP;
         return {
@@ -44,10 +47,13 @@ function getCurrentProxy() {
     };
 }
 function setCurrentProxy(proxyIP) {
-    let fileContent = fs.readFileSync(CONFIG_FILE).toString().replace(/[ ]/gm, '');
+    let fileContent = fs
+        .readFileSync(CONFIG_FILE)
+        .toString()
+        .replace(/[ ]/gm, '');
     let result;
     let newFileContent;
-    if (result = REG.exec(fileContent)) {
+    if ((result = REG.exec(fileContent))) {
         let matched = result[0];
         let currentProxyIP = result[1];
         let replacedMatched = matched.replace(currentProxyIP, proxyIP);
@@ -59,29 +65,52 @@ function setCurrentProxy(proxyIP) {
     fs.writeFileSync(CONFIG_FILE, newFileContent);
     return newFileContent;
 }
-function show(msg) {
-    window.showInformationMessage(msg);
+function onCustomProxy() {
+    let inputBox = window.createInputBox();
+    inputBox.placeholder = '格式：172.16.32.31:8083';
+    inputBox.onDidAccept(function () {
+        let value = inputBox.value.replace(' ', '');
+        if (/[\d]+\.[\d]+\.[\d]+\.[\d]+:[\d]+/.test(value)) {
+            setCurrentProxy(inputBox.value);
+            inputBox.dispose();
+        }
+        else {
+            window.showWarningMessage('请输入正确的虚拟机地址格式');
+        }
+    });
+    inputBox.show();
 }
+exports.onCustomProxy = onCustomProxy;
 function onSelectProxy() {
     let currentProxyIP = getCurrentProxy().currentProxyIP;
     let quickPick = window.createQuickPick();
     let selectedItem;
-    quickPick.items = Object.entries(PROXY).map(([proxyIP, proxyName]) => {
+    let items = [
+        {
+            label: '$(gear) 自定义',
+            detail: 'custom',
+        },
+    ].concat(Object.entries(PROXY).map(([proxyIP, proxyName]) => {
         let item = {
-            label: proxyName,
+            label: `$(device-desktop) ${proxyName}`,
             detail: proxyIP,
         };
-        console.warn(proxyIP === currentProxyIP);
         if (proxyIP === currentProxyIP) {
             selectedItem = item;
         }
         return item;
-    });
+    }));
+    quickPick.items = items;
     quickPick.selectedItems = [selectedItem];
     quickPick.activeItems = [selectedItem];
     quickPick.onDidAccept(function () {
         let selectedItem = quickPick.activeItems[0];
-        setCurrentProxy(selectedItem.detail);
+        if (selectedItem.detail === 'custom') {
+            onCustomProxy();
+        }
+        else {
+            setCurrentProxy(selectedItem.detail);
+        }
         quickPick.dispose();
     });
     quickPick.show();

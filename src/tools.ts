@@ -1,6 +1,8 @@
 import * as vscode from 'vscode'
 import { onFormat } from './format'
-import { onSelectProxy } from './proxyConfig'
+import { onSelectProxy, onCustomProxy } from './proxyConfig'
+
+
 const window = vscode.window
 
 export function addToolButton(context: vscode.ExtensionContext) {
@@ -15,6 +17,9 @@ export function addToolButton(context: vscode.ExtensionContext) {
     )
     context.subscriptions.push(
         vscode.commands.registerCommand('misTools.selectProxy', onSelectProxy),
+    )
+    context.subscriptions.push(
+        vscode.commands.registerCommand('misTools.customProxy', onCustomProxy),
     )
 }
 

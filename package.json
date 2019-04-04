@@ -28,6 +28,11 @@
         "category": "TFZ",
         "command": "misTools.selectProxy",
         "title": "选择虚拟机"
+      },
+      {
+        "category": "TFZ",
+        "command": "misTools.customProxy",
+        "title": "自定义虚拟机"
       }
     ]
   },

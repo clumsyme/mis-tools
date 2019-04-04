@@ -1,5 +1,6 @@
 import * as vscode from 'vscode'
 
+
 const window = vscode.window
 
 const NPM_TREMINAL_NAME = '跳房子'

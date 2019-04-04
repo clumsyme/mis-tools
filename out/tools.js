@@ -12,6 +12,7 @@ function addToolButton(context) {
     context.subscriptions.push(toolBarItem);
     context.subscriptions.push(vscode.commands.registerCommand('misTools.selectTools', onSelectTools));
     context.subscriptions.push(vscode.commands.registerCommand('misTools.selectProxy', proxyConfig_1.onSelectProxy));
+    context.subscriptions.push(vscode.commands.registerCommand('misTools.customProxy', proxyConfig_1.onCustomProxy));
 }
 exports.addToolButton = addToolButton;
 function onSelectTools() {

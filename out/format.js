@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const child_process_1 = require("child_process");
-// vscode.window.activeTextEditor.document.fileName
 function onFormat() {
     let currentFilePath;
     try {
