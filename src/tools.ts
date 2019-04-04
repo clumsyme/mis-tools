@@ -23,11 +23,11 @@ function onSelectTools() {
 
     quickPick.items = [
         {
-            label: '格式化当前文件',
+            label: '$(book) 格式化当前文件',
             detail: 'format',
         },
         {
-            label: '选择后端虚拟机',
+            label: '$(device-desktop) 选择后端虚拟机',
             detail: 'proxy',
         },
     ]
