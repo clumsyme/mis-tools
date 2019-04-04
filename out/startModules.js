@@ -5,7 +5,7 @@ const window = vscode.window;
 const NPM_TREMINAL_NAME = '跳房子';
 function addMisButton(context) {
     let startBarItem = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-    startBarItem.text = '启动跳房子';
+    startBarItem.text = '$(rocket) 启动跳房子';
     startBarItem.command = 'misTools.selectStartModules';
     startBarItem.show();
     context.subscriptions.push(startBarItem);
@@ -57,7 +57,7 @@ function onSelectStartModules() {
             if (selectedItem.description) {
                 ternimalCommand += ' -- modules=' + selectedItem.description;
             }
-            quickPick.hide();
+            quickPick.dispose();
             let terminal = showTerminal(NPM_TREMINAL_NAME);
             terminal.sendText(ternimalCommand);
         }

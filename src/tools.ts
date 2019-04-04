@@ -1,7 +1,6 @@
 import * as vscode from 'vscode'
-import { execSync } from 'child_process'
 import { onFormat } from './format'
-
+import { onSelectProxy } from './proxyConfig'
 const window = vscode.window
 
 export function addToolButton(context: vscode.ExtensionContext) {
@@ -14,6 +13,9 @@ export function addToolButton(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('misTools.selectTools', onSelectTools),
     )
+    context.subscriptions.push(
+        vscode.commands.registerCommand('misTools.selectProxy', onSelectProxy),
+    )
 }
 
 function onSelectTools() {
@@ -24,12 +26,19 @@ function onSelectTools() {
             label: '格式化当前文件',
             detail: 'format',
         },
+        {
+            label: '选择后端虚拟机',
+            detail: 'proxy',
+        },
     ]
     quickPick.onDidAccept(function() {
         let selectedItem = quickPick.activeItems[0]
         if (selectedItem) {
             if (selectedItem.detail === 'format') {
                 onFormat()
+                quickPick.dispose()
+            } else if (selectedItem.detail === 'proxy') {
+                onSelectProxy()
                 quickPick.dispose()
             }
         }
