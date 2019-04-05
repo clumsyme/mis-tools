@@ -1,9 +1,45 @@
 import * as vscode from 'vscode'
-
+import { updateLaunchBarItem } from './launchApp'
 
 const window = vscode.window
 
-const NPM_TREMINAL_NAME = '跳房子'
+export const quickPickItems = [
+    {
+        label: '完整启动',
+        detail: '启动所有模块',
+        description: 'all',
+    },
+    {
+        label: '销售',
+        detail: '启动销售相关模块',
+        description: 'sales',
+    },
+    {
+        label: '公共',
+        detail: '启动公共相关模块',
+        description: 'common',
+    },
+    {
+        label: '实施',
+        detail: '启动实施相关模块',
+        description: 'implement',
+    },
+    {
+        label: '报表',
+        detail: '启动报表相关模块',
+        description: 'report',
+    },
+    {
+        label: '基础',
+        detail: '启动基础相关模块（人事、群组、权限等）',
+        description: 'basic',
+    },
+    {
+        label: '学堂',
+        detail: '启动学堂相关模块',
+        description: 'school',
+    },
+]
 
 export function addMisButton(context: vscode.ExtensionContext) {
     let startBarItem = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100)
@@ -17,67 +53,50 @@ export function addMisButton(context: vscode.ExtensionContext) {
     )
 }
 
-function onSelectStartModules() {
+export function onSelectStartModules() {
+    let misSetting = vscode.workspace.getConfiguration('mis-tools')
+    let modulesSetting: string = misSetting.get('modules')
+
     let quickPick = window.createQuickPick()
 
-    quickPick.items = [
-        {
-            label: '完整启动',
-            detail: '启动所有模块',
-        },
-        {
-            label: '销售',
-            detail: '启动销售相关模块',
-            description: 'sales',
-        },
-        {
-            label: '公共',
-            detail: '启动公共相关模块',
-            description: 'common',
-        },
-        {
-            label: '实施',
-            detail: '启动实施相关模块',
-            description: 'implement',
-        },
-        {
-            label: '报表',
-            detail: '启动报表相关模块',
-            description: 'report',
-        },
-        {
-            label: '基础',
-            detail: '启动基础相关模块（人事、群组、权限等）',
-            description: 'basic',
-        },
-        {
-            label: '学堂',
-            detail: '启动学堂相关模块',
-            description: 'school',
-        },
-    ]
-    quickPick.onDidAccept(function() {
-        let selectedItem = quickPick.activeItems[0]
-        if (selectedItem) {
-            let ternimalCommand = 'npm start'
-            if (selectedItem.description) {
-                ternimalCommand += ' -- modules=' + selectedItem.description
-            }
-            quickPick.dispose()
-            let terminal = showTerminal(NPM_TREMINAL_NAME)
-            terminal.sendText(ternimalCommand)
+    quickPick.canSelectMany = true
+
+    quickPick.items = quickPickItems
+
+    let currentSelectedItems = quickPick.items.filter((item) =>
+        modulesSetting.includes(item.description),
+    )
+    quickPick.selectedItems = currentSelectedItems
+
+    quickPick.onDidChangeSelection(function(items) {
+        if (
+            // 选中所有
+            !currentSelectedItems.some((item) => item.description === 'all') &&
+            items.some((item) => item.description === 'all')
+        ) {
+            quickPick.selectedItems = quickPickItems.slice(0, 1)
+        } else if (
+            currentSelectedItems.some((item) => item.description === 'all') &&
+            items.some((item) => item.description === 'all') &&
+            items.length > 1
+        ) {
+            quickPick.selectedItems = items.filter((item) => item.description !== 'all')
         }
+
+        currentSelectedItems = items
+    })
+    quickPick.onDidAccept(function() {
+        let misSetting = vscode.workspace.getConfiguration('mis-tools')
+        const selectedItems = quickPick.selectedItems
+        const selectedModules = selectedItems
+            .map((selectedItem) => selectedItem.description)
+            .join(',')
+        misSetting.update('modules', selectedModules, true)
+
+        updateLaunchBarItem(selectedItems.map((item) => item.label).join(','))
+
+        quickPick.dispose()
     })
 
     quickPick.show()
-}
-
-function showTerminal(terminalName: string) {
-    let mainTerminal = window.terminals.filter((terminal) => terminal.name === terminalName)[0]
-    if (mainTerminal) {
-        mainTerminal.dispose()
-    }
-    mainTerminal = window.createTerminal(terminalName)
-    mainTerminal.show()
-    return mainTerminal
 }

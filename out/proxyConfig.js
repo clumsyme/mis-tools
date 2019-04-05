@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
-const tools_1 = require("./tools");
+const launchApp_1 = require("./launchApp");
 const window = vscode.window;
 const ROOTPATH = vscode.workspace.rootPath;
 const CONFIG_FILE = path.join(ROOTPATH, 'mis-web-react/config/.proxyrc.js');
@@ -65,7 +65,7 @@ function setCurrentProxy(proxyIP) {
         newFileContent = fileContent.replace('{', `{\nproxy:'${proxyIP}',`);
     }
     fs.writeFileSync(CONFIG_FILE, newFileContent);
-    tools_1.updateToolBarText();
+    launchApp_1.updateLaunchBarItem();
     return newFileContent;
 }
 function onCustomProxy() {

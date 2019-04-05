@@ -34,7 +34,19 @@
         "command": "misTools.customProxy",
         "title": "自定义虚拟机"
       }
-    ]
+    ],
+    "configuration": {
+        "type": "object",
+        "title": "跳房子",
+        "properties": {
+            "mis-tools.modules": {
+                "type": "string",
+                "default": "all",
+                "markdownDescription": "默认启动模块(*请不要手动编辑此设置*)",
+                "scope":"application"
+            }
+        }
+    }
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

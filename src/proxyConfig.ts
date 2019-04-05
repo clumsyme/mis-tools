@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import * as fs from 'fs'
 import * as path from 'path'
-import { updateToolBarText } from './tools'
+import { updateLaunchBarItem } from './launchApp'
 
 const window = vscode.window
 
@@ -70,7 +70,7 @@ function setCurrentProxy(proxyIP: string) {
         newFileContent = fileContent.replace('{', `{\nproxy:'${proxyIP}',`)
     }
     fs.writeFileSync(CONFIG_FILE, newFileContent)
-    updateToolBarText()
+    updateLaunchBarItem()
     return newFileContent
 }
 

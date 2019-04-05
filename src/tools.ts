@@ -1,6 +1,7 @@
 import * as vscode from 'vscode'
 import { onFormat } from './format'
 import { onSelectProxy, onCustomProxy, getCurrentProxy } from './proxyConfig'
+import { onSelectStartModules } from './startModules'
 
 
 const window = vscode.window
@@ -8,7 +9,7 @@ const window = vscode.window
 let toolBarItem: vscode.StatusBarItem
 export function addToolButton(context: vscode.ExtensionContext) {
     toolBarItem = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 101)
-    updateToolBarText()
+    toolBarItem.text = '$(tools) 跳房子工具'
     toolBarItem.command = 'misTools.selectTools'
     toolBarItem.show()
 
@@ -22,15 +23,18 @@ export function addToolButton(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('misTools.customProxy', onCustomProxy),
     )
+    context.subscriptions.push(
+        vscode.commands.registerCommand('misTools.selectStartModules', onSelectStartModules),
+    )
 }
 
 
-export function updateToolBarText() {
-    let currentProxyName = getCurrentProxy().currentProxyName
-    let currentProxyIP = getCurrentProxy().currentProxyIP
-    toolBarItem.text = `$(tools) 跳房子工具(虚拟机：${currentProxyName})`
-    toolBarItem.tooltip = currentProxyIP
-}
+// export function updateToolBarText() {
+//     let currentProxyName = getCurrentProxy().currentProxyName
+//     let currentProxyIP = getCurrentProxy().currentProxyIP
+//     toolBarItem.text = `$(tools) 跳房子工具(虚拟机：${currentProxyName})`
+//     toolBarItem.tooltip = currentProxyIP
+// }
 
 function onSelectTools() {
     let quickPick = window.createQuickPick()
@@ -44,6 +48,10 @@ function onSelectTools() {
             label: '$(device-desktop) 选择后端虚拟机',
             detail: 'proxy',
         },
+        {
+            label: '$(file-submodule) 选择默认启动模块',
+            detail: 'modules',
+        },
     ]
     quickPick.onDidAccept(function() {
         let selectedItem = quickPick.activeItems[0]
@@ -53,6 +61,9 @@ function onSelectTools() {
                 quickPick.dispose()
             } else if (selectedItem.detail === 'proxy') {
                 onSelectProxy()
+                quickPick.dispose()
+            } else if (selectedItem.detail === 'modules') {
+                onSelectStartModules()
                 quickPick.dispose()
             }
         }
