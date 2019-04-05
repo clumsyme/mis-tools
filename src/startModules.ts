@@ -74,9 +74,10 @@ function onSelectStartModules() {
 
 function showTerminal(terminalName: string) {
     let mainTerminal = window.terminals.filter((terminal) => terminal.name === terminalName)[0]
-    if (!mainTerminal) {
-        mainTerminal = window.createTerminal(terminalName)
+    if (mainTerminal) {
+        mainTerminal.dispose()
     }
+    mainTerminal = window.createTerminal(terminalName)
     mainTerminal.show()
     return mainTerminal
 }
