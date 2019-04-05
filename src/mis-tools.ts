@@ -9,9 +9,6 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 vscode.workspace.onDidChangeConfiguration(function() {
-    let n = 1
-    let modulesSetting: string = vscode.workspace.getConfiguration('mis-tools').get('modules')
-    vscode.workspace.getConfiguration('mis-tools').update('modules', '' + n++)
     updateLaunchBarItem()
 })
 

@@ -6,7 +6,7 @@ const window = vscode.window
 
 const NPM_TREMINAL_NAME = '跳房子'
 
-let launchBarItem
+let launchBarItem: vscode.StatusBarItem
 export function addLaunchButton(context: vscode.ExtensionContext) {
     launchBarItem = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100)
     updateLaunchBarItem()
