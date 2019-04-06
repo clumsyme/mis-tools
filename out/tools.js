@@ -18,12 +18,6 @@ function addToolButton(context) {
     context.subscriptions.push(vscode.commands.registerCommand('misTools.selectStartModules', startModules_1.onSelectStartModules));
 }
 exports.addToolButton = addToolButton;
-// export function updateToolBarText() {
-//     let currentProxyName = getCurrentProxy().currentProxyName
-//     let currentProxyIP = getCurrentProxy().currentProxyIP
-//     toolBarItem.text = `$(tools) 跳房子工具(虚拟机：${currentProxyName})`
-//     toolBarItem.tooltip = currentProxyIP
-// }
 function onSelectTools() {
     let quickPick = window.createQuickPick();
     quickPick.items = [

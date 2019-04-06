@@ -13,6 +13,12 @@ export function addLaunchButton(context: vscode.ExtensionContext) {
     launchBarItem.command = 'misTools.launchApp'
     launchBarItem.show()
 
+    vscode.workspace.onDidChangeConfiguration(function(event) {
+        if (event.affectsConfiguration('mis-tools.modules')) {
+            updateLaunchBarItem()
+        }
+    })
+
     context.subscriptions.push(launchBarItem)
     context.subscriptions.push(vscode.commands.registerCommand('misTools.launchApp', onLaunchApp))
 }
@@ -47,6 +53,6 @@ export function updateLaunchBarItem(currentSelectedModules?: string) {
     }
     let currentProxyName = getCurrentProxy().currentProxyName
     let currentProxyIP = getCurrentProxy().currentProxyIP
-    launchBarItem.text = `$(rocket) 启动跳房子(${currentSelectedModules}：${currentProxyName})`
+    launchBarItem.text = `$(rocket) 启动跳房子(${currentSelectedModules} : ${currentProxyName})`
     launchBarItem.tooltip = currentProxyIP
 }

@@ -4,7 +4,7 @@
   "icon": "images/logo.png",
   "description": "Tools for mis",
   "repository": "https://github.com/clumsyme/mis-tools",
-  "main": "./out/mis-tools.js",
+  "main": "./out/index.js",
   "publisher": "Yan",
   "engines": {
     "vscode": "^1.25.0"

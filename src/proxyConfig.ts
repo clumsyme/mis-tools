@@ -36,22 +36,23 @@ type CurrentProxy = {
 
 const REG = new RegExp(/[^\/]proxy:['"](.*?)['"]/)
 export function getCurrentProxy(): null | CurrentProxy {
-    let fileContent = fs
-        .readFileSync(CONFIG_FILE)
-        .toString()
-        .replace(/[ ]/gm, '')
-    let result: null | RegExpExecArray
-    if ((result = REG.exec(fileContent))) {
+    try {
+        let fileContent = fs
+            .readFileSync(CONFIG_FILE)
+            .toString()
+            .replace(/[ ]/gm, '')
+        let result: null | RegExpExecArray = REG.exec(fileContent)
         let currentProxyIP = result[1]
         let currentProxyName = PROXY[currentProxyIP] || currentProxyIP
         return {
             currentProxyIP,
             currentProxyName,
         }
-    }
-    return {
-        currentProxyIP: '',
-        currentProxyName: '',
+    } catch(error) {
+        return {
+            currentProxyIP: '-',
+            currentProxyName: '-',
+        }
     }
 }
 function setCurrentProxy(proxyIP: string) {

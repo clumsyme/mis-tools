@@ -41,18 +41,6 @@ export const quickPickItems = [
     },
 ]
 
-export function addMisButton(context: vscode.ExtensionContext) {
-    let startBarItem = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100)
-    startBarItem.text = '$(rocket) 启动跳房子'
-    startBarItem.command = 'misTools.selectStartModules'
-    startBarItem.show()
-
-    context.subscriptions.push(startBarItem)
-    context.subscriptions.push(
-        vscode.commands.registerCommand('misTools.selectStartModules', onSelectStartModules),
-    )
-}
-
 export function onSelectStartModules() {
     let misSetting = vscode.workspace.getConfiguration('mis-tools')
     let modulesSetting: string = misSetting.get('modules')
@@ -92,8 +80,6 @@ export function onSelectStartModules() {
             .map((selectedItem) => selectedItem.description)
             .join(',')
         misSetting.update('modules', selectedModules, true)
-
-        updateLaunchBarItem(selectedItems.map((item) => item.label).join(','))
 
         quickPick.dispose()
     })

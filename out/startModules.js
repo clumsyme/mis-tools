@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
-const launchApp_1 = require("./launchApp");
 const window = vscode.window;
 exports.quickPickItems = [
     {
@@ -40,15 +39,6 @@ exports.quickPickItems = [
         description: 'school',
     },
 ];
-function addMisButton(context) {
-    let startBarItem = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-    startBarItem.text = '$(rocket) 启动跳房子';
-    startBarItem.command = 'misTools.selectStartModules';
-    startBarItem.show();
-    context.subscriptions.push(startBarItem);
-    context.subscriptions.push(vscode.commands.registerCommand('misTools.selectStartModules', onSelectStartModules));
-}
-exports.addMisButton = addMisButton;
 function onSelectStartModules() {
     let misSetting = vscode.workspace.getConfiguration('mis-tools');
     let modulesSetting = misSetting.get('modules');
@@ -78,7 +68,6 @@ function onSelectStartModules() {
             .map((selectedItem) => selectedItem.description)
             .join(',');
         misSetting.update('modules', selectedModules, true);
-        launchApp_1.updateLaunchBarItem(selectedItems.map((item) => item.label).join(','));
         quickPick.dispose();
     });
     quickPick.show();

@@ -28,14 +28,6 @@ export function addToolButton(context: vscode.ExtensionContext) {
     )
 }
 
-
-// export function updateToolBarText() {
-//     let currentProxyName = getCurrentProxy().currentProxyName
-//     let currentProxyIP = getCurrentProxy().currentProxyIP
-//     toolBarItem.text = `$(tools) 跳房子工具(虚拟机：${currentProxyName})`
-//     toolBarItem.tooltip = currentProxyIP
-// }
-
 function onSelectTools() {
     let quickPick = window.createQuickPick()
 

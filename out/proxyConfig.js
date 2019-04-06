@@ -29,12 +29,12 @@ const PROXY = {
 };
 const REG = new RegExp(/[^\/]proxy:['"](.*?)['"]/);
 function getCurrentProxy() {
-    let fileContent = fs
-        .readFileSync(CONFIG_FILE)
-        .toString()
-        .replace(/[ ]/gm, '');
-    let result;
-    if ((result = REG.exec(fileContent))) {
+    try {
+        let fileContent = fs
+            .readFileSync(CONFIG_FILE)
+            .toString()
+            .replace(/[ ]/gm, '');
+        let result = REG.exec(fileContent);
         let currentProxyIP = result[1];
         let currentProxyName = PROXY[currentProxyIP] || currentProxyIP;
         return {
@@ -42,10 +42,12 @@ function getCurrentProxy() {
             currentProxyName,
         };
     }
-    return {
-        currentProxyIP: '',
-        currentProxyName: '',
-    };
+    catch (error) {
+        return {
+            currentProxyIP: '-',
+            currentProxyName: '-',
+        };
+    }
 }
 exports.getCurrentProxy = getCurrentProxy;
 function setCurrentProxy(proxyIP) {
