@@ -37,6 +37,73 @@
 }
 ```
 
+### 推荐的 eslint 配置
+
+```js
+// .eslintrc.js
+module.exports = {
+    "env": {
+        "browser": true,
+        "node": true,
+        "commonjs": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+            "jsx": true,
+            "modules": true
+        },
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "react-hooks"
+    ],
+    "rules": {
+        "indent": [
+            "off", 
+            4, 
+            { "SwitchCase": 1 }
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "warn",
+            "single"
+        ],
+        "semi": [
+            "warn",
+            "never"
+        ],
+        "comma-dangle": ["warn", {
+            "arrays": "always-multiline",
+            "objects": "always-multiline",
+            "imports": "always-multiline",
+            "exports": "always-multiline",
+            "functions": "always-multiline",
+        }],
+        // "valid-jsdoc": "warn",
+        "no-console": "error",
+        "no-use-before-define": "error",
+        "no-class-assign": "off",
+        "no-unused-vars": "warn",
+        "no-case-declarations": "warn",
+        "react/prop-types": "off",
+        "react/display-name": "off",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+    },
+};
+```
+
 ## 贡献代码
 
 如果发现有什么问题，或者有功能需要添加，可以到 [GitHub](https://github.com/clumsyme/mis-tools) 提 [issue](https://github.com/clumsyme/mis-tools/issues/new) 或 [Pull Request](https://github.com/clumsyme/mis-tools/compare)。
