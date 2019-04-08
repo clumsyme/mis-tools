@@ -1,5 +1,4 @@
 import * as vscode from 'vscode'
-import { exec } from 'child_process'
 import * as prettier from 'prettier'
 
 const window = vscode.window
@@ -25,8 +24,8 @@ export function onFormat() {
         },
         (progress, token) => {
             return new Promise((resolve) => {
-                let opendDocument: vscode.TextDocument = vscode.window.activeTextEditor.document
-                let formatted = prettier.format(opendDocument.getText(), {
+                let openedDocument: vscode.TextDocument = vscode.window.activeTextEditor.document
+                let formatted: string = prettier.format(openedDocument.getText(), {
                     parser: 'babel',
                     semi: false,
                     singleQuote: true,
@@ -35,8 +34,8 @@ export function onFormat() {
                     tabWidth: 4,
                     printWidth: 100,
                 })
-                const edit = new vscode.WorkspaceEdit()
-                edit.replace(opendDocument.uri, fullDocumentRange(opendDocument), formatted)
+                const edit: vscode.WorkspaceEdit = new vscode.WorkspaceEdit()
+                edit.replace(openedDocument.uri, fullDocumentRange(openedDocument), formatted)
                 vscode.workspace.applyEdit(edit)
                 resolve()
             })
