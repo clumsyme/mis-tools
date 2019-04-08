@@ -1,4 +1,4 @@
-<div style="text-align: center">
+<div align="center">
     <img src="https://raw.githubusercontent.com/clumsyme/mis-tools/master/images/logo.png" />
     <h1>跳房子开发相关工具</h1>
 </div>
