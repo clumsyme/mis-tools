@@ -36,3 +36,7 @@
     arrowParens: 'always',
 }
 ```
+
+## 贡献代码
+
+如果发现有什么问题，或者有功能需要添加，可以到 [GitHub](https://github.com/clumsyme/mis-tools) 提 [issue](https://github.com/clumsyme/mis-tools/issues/new) 或 [Pull Request](https://github.com/clumsyme/mis-tools/compare)。
