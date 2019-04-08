@@ -8,6 +8,31 @@ function fullDocumentRange(document: vscode.TextDocument): vscode.Range {
     return new vscode.Range(0, 0, lastLineId, document.lineAt(lastLineId).text.length)
 }
 
+function getParserOptions(currentFilePath: string): prettier.Options {
+    let ext: string = currentFilePath.split('.').slice(-1)[0]
+    switch (ext) {
+        case 'css':
+            return {
+                parser: 'css',
+            }
+        case 'html':
+        case 'htm':
+            return {
+                parser: 'html',
+            }
+        default:
+            return {
+                parser: 'babel',
+                semi: false,
+                singleQuote: true,
+                trailingComma: 'all',
+                arrowParens: 'always',
+                tabWidth: 4,
+                printWidth: 100,
+            }
+    }
+}
+
 export function onFormat() {
     let currentFilePath: string
     try {
@@ -25,15 +50,7 @@ export function onFormat() {
         (progress, token) => {
             return new Promise((resolve) => {
                 let openedDocument: vscode.TextDocument = vscode.window.activeTextEditor.document
-                let formatted: string = prettier.format(openedDocument.getText(), {
-                    parser: 'babel',
-                    semi: false,
-                    singleQuote: true,
-                    trailingComma: 'all',
-                    arrowParens: 'always',
-                    tabWidth: 4,
-                    printWidth: 100,
-                })
+                let formatted: string = prettier.format(openedDocument.getText(), getParserOptions(currentFilePath))
                 const edit: vscode.WorkspaceEdit = new vscode.WorkspaceEdit()
                 edit.replace(openedDocument.uri, fullDocumentRange(openedDocument), formatted)
                 vscode.workspace.applyEdit(edit)
