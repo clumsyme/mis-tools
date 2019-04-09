@@ -14,11 +14,13 @@ function getParserOptions(currentFilePath: string): prettier.Options {
         case 'css':
             return {
                 parser: 'css',
+                tabWidth: 4,
             }
         case 'html':
         case 'htm':
             return {
                 parser: 'html',
+                tabWidth: 4,
             }
         default:
             return {
