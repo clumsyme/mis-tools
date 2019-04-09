@@ -107,3 +107,18 @@ module.exports = {
 ## 贡献代码
 
 如果发现有什么问题，或者有功能需要添加，可以到 [GitHub](https://github.com/clumsyme/mis-tools) 提 [issue](https://github.com/clumsyme/mis-tools/issues/new) 或 [Pull Request](https://github.com/clumsyme/mis-tools/compare)。
+
+### 开发
+
+- clone 项目并安装依赖
+
+```bash
+git clone git@github.com:clumsyme/mis-tools.git
+cd mis-tools
+npm install
+```
+
+- 打开 VSCode 的 Debug 菜单 <kbd>Shift + CMD + D</kbd>
+- 选择 `Run Extension` 命令执行，这将会
+    - 执行 `npm: watch` 任务
+    - 打开一个新的 VSCode 窗口，并加载插件
