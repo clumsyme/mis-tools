@@ -35,7 +35,12 @@ function getParserOptions(currentFilePath: string): prettier.Options {
     }
 }
 
-export function onFormat() {
+export function onFormat(document: vscode.TextDocument) {
+    let formatted: string = prettier.format(document.getText(), getParserOptions(document.fileName))
+    return [vscode.TextEdit.replace(fullDocumentRange(document), formatted)]
+}
+
+export function onManualFormat() {
     let currentFilePath: string
     try {
         currentFilePath = vscode.window.activeTextEditor.document.fileName
@@ -52,7 +57,10 @@ export function onFormat() {
         (progress, token) => {
             return new Promise((resolve) => {
                 let openedDocument: vscode.TextDocument = vscode.window.activeTextEditor.document
-                let formatted: string = prettier.format(openedDocument.getText(), getParserOptions(currentFilePath))
+                let formatted: string = prettier.format(
+                    openedDocument.getText(),
+                    getParserOptions(currentFilePath),
+                )
                 const edit: vscode.WorkspaceEdit = new vscode.WorkspaceEdit()
                 edit.replace(openedDocument.uri, fullDocumentRange(openedDocument), formatted)
                 vscode.workspace.applyEdit(edit)

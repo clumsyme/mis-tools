@@ -1,6 +1,6 @@
 {
   "name": "mis-tools",
-  "version": "0.6.5",
+  "version": "0.7.0",
   "icon": "images/logo.png",
   "description": "Tools for mis",
   "repository": "https://github.com/clumsyme/mis-tools",
@@ -14,6 +14,11 @@
   ],
   "contributes": {
     "commands": [
+      {
+        "category": "TFZ",
+        "command": "misTools.format",
+        "title": "格式化当前文件"
+      },
       {
         "category": "TFZ",
         "command": "misTools.selectStartModules",

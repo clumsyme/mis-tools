@@ -1,8 +1,8 @@
 import * as vscode from 'vscode'
-import { onFormat } from './format'
+import * as prettier from 'prettier'
+import { onFormat, onManualFormat } from './format'
 import { onSelectProxy, onCustomProxy, getCurrentProxy } from './proxyConfig'
 import { onSelectStartModules } from './startModules'
-
 
 const window = vscode.window
 
@@ -14,6 +14,7 @@ export function addToolButton(context: vscode.ExtensionContext) {
     toolBarItem.show()
 
     context.subscriptions.push(toolBarItem)
+    context.subscriptions.push(vscode.commands.registerCommand('misTools.format', onManualFormat))
     context.subscriptions.push(
         vscode.commands.registerCommand('misTools.selectTools', onSelectTools),
     )
@@ -26,6 +27,26 @@ export function addToolButton(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('misTools.selectStartModules', onSelectStartModules),
     )
+    vscode.languages.registerDocumentFormattingEditProvider('javascript', {
+        provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
+            return onFormat(document)
+        },
+    })
+    vscode.languages.registerDocumentFormattingEditProvider('html', {
+        provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
+            return onFormat(document)
+        },
+    })
+    vscode.languages.registerDocumentFormattingEditProvider('css', {
+        provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
+            return onFormat(document)
+        },
+    })
+    vscode.languages.registerDocumentFormattingEditProvider('json', {
+        provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
+            return onFormat(document)
+        },
+    })
 }
 
 function onSelectTools() {
@@ -49,7 +70,7 @@ function onSelectTools() {
         let selectedItem = quickPick.activeItems[0]
         if (selectedItem) {
             if (selectedItem.detail === 'format') {
-                onFormat()
+                onManualFormat()
                 quickPick.dispose()
             } else if (selectedItem.detail === 'proxy') {
                 onSelectProxy()
