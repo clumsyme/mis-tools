@@ -37,6 +37,29 @@
 }
 ```
 
+### 格式化
+
+可在工作区设置中设置该扩展为默认格式化程序:
+
+```json
+"[javascript]": {
+    "editor.defaultFormatter": "Yan.mis-tools"
+},
+"[html]": {
+    "editor.defaultFormatter": "Yan.mis-tools"
+},
+"[css]": {
+    "editor.defaultFormatter": "Yan.mis-tools"
+},
+```
+
+按下快捷键：
+
+- Windows：<kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd>
+- MacOS: <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>F</kbd>
+
+即可。
+
 ### 推荐的 eslint 配置
 
 ```js
