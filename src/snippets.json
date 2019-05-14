@@ -1,40 +1,4 @@
 {
-    "导入 React": {
-        "prefix": "imrc",
-        "body": [
-            "import React, { Component } from 'react'\n"
-        ],
-        "description": "import React"
-    },
-    "导出默认函数组件": {
-        "prefix": "edf",
-        "body": [
-            "export default function $1(props) {",
-            "    render() {",
-            "        return (",
-            "            $2",
-            "        )",
-            "    }",
-            "}"
-        ],
-        "description": "MIS: export default functional component"
-    },
-    "new region": {
-        "prefix": "start region",
-        "body": [
-            "//#region $1",
-            "$2",
-            "//#endregion $1"
-        ],
-        "description": "MIS: 创建新代码块"
-    },
-    "new region end": {
-        "prefix": "end region",
-        "body": [
-            "//#endregion $1\n"
-        ],
-        "description": "MIS: 创建新结束代码块"
-    },
     "Redux Connect": {
         "prefix": "map state",
         "body": [
