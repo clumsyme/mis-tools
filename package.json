@@ -1,73 +1,84 @@
 {
-  "name": "mis-tools",
-  "version": "0.7.0",
-  "icon": "images/logo.png",
-  "description": "Tools for mis",
-  "repository": "https://github.com/clumsyme/mis-tools",
-  "main": "./out/index.js",
-  "publisher": "Yan",
-  "engines": {
-    "vscode": "^1.25.0"
-  },
-  "activationEvents": [
-    "workspaceContains:**/mis-web-react"
-  ],
-  "contributes": {
-    "commands": [
-      {
-        "category": "TFZ",
-        "command": "misTools.format",
-        "title": "格式化当前文件"
-      },
-      {
-        "category": "TFZ",
-        "command": "misTools.selectStartModules",
-        "title": "选择要启动的模块"
-      },
-      {
-        "category": "TFZ",
-        "command": "misTools.selectTools",
-        "title": "选择功能"
-      },
-      {
-        "category": "TFZ",
-        "command": "misTools.selectProxy",
-        "title": "选择虚拟机"
-      },
-      {
-        "category": "TFZ",
-        "command": "misTools.customProxy",
-        "title": "自定义虚拟机"
-      }
+    "name": "mis-tools",
+    "version": "0.8.0",
+    "icon": "images/logo.png",
+    "description": "Tools for mis",
+    "repository": "https://github.com/clumsyme/mis-tools",
+    "main": "./out/index.js",
+    "publisher": "Yan",
+    "engines": {
+        "vscode": "^1.25.0"
+    },
+    "categories": [
+        "Snippets",
+        "Formatters",
+        "Other"
     ],
-    "configuration": {
-      "type": "object",
-      "title": "跳房子",
-      "properties": {
-        "mis-tools.modules": {
-          "type": "string",
-          "default": "all",
-          "markdownDescription": "默认启动模块(*请不要手动编辑此设置*)",
-          "scope": "application"
+    "activationEvents": [
+        "workspaceContains:**/mis-web-react"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "category": "TFZ",
+                "command": "misTools.format",
+                "title": "格式化当前文件"
+            },
+            {
+                "category": "TFZ",
+                "command": "misTools.selectStartModules",
+                "title": "选择要启动的模块"
+            },
+            {
+                "category": "TFZ",
+                "command": "misTools.selectTools",
+                "title": "选择功能"
+            },
+            {
+                "category": "TFZ",
+                "command": "misTools.selectProxy",
+                "title": "选择虚拟机"
+            },
+            {
+                "category": "TFZ",
+                "command": "misTools.customProxy",
+                "title": "自定义虚拟机"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "javascript",
+                "path": "./src/snippets.json"
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "跳房子",
+            "properties": {
+                "mis-tools.modules": {
+                    "type": "string",
+                    "default": "all",
+                    "markdownDescription": "默认启动模块(*请不要手动编辑此设置*)",
+                    "scope": "application"
+                }
+            }
         }
-      }
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "watch": "tsc -watch -p ./",
+        "compile": "tsc -p ./",
+        "publish": "npm run compile && vsce publish"
+    },
+    "author": "Li Yan",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "11.13.0",
+        "@types/prettier": "^1.16.1",
+        "typescript": "^3.4.1",
+        "vscode": "^1.1.33"
+    },
+    "dependencies": {
+        "prettier": "^1.16.4"
     }
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "tsc -watch -p ./",
-    "compile": "tsc -p ./",
-    "publish": "npm run compile && vsce publish"
-  },
-  "author": "Li Yan",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/node": "11.13.0",
-    "@types/prettier": "^1.16.1",
-    "typescript": "^3.4.1",
-    "vscode": "^1.1.33"
-  },
-  "dependencies": {
-    "prettier": "^1.16.4"
-  }
 }

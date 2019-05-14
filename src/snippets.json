@@ -1,0 +1,106 @@
+{
+    "导入 React": {
+        "prefix": "imrc",
+        "body": [
+            "import React, { Component } from 'react'\n"
+        ],
+        "description": "import React"
+    },
+    "导出默认函数组件": {
+        "prefix": "edf",
+        "body": [
+            "export default function $1(props) {",
+            "    render() {",
+            "        return (",
+            "            $2",
+            "        )",
+            "    }",
+            "}"
+        ],
+        "description": "MIS: export default functional component"
+    },
+    "new region": {
+        "prefix": "start region",
+        "body": [
+            "//#region $1",
+            "$2",
+            "//#endregion $1"
+        ],
+        "description": "MIS: 创建新代码块"
+    },
+    "new region end": {
+        "prefix": "end region",
+        "body": [
+            "//#endregion $1\n"
+        ],
+        "description": "MIS: 创建新结束代码块"
+    },
+    "Redux Connect": {
+        "prefix": "map state",
+        "body": [
+            "const mapStateToProps = (state) => ({",
+            "    $1: $2",
+            "})",
+            "",
+            "const mapDispatchToProps = (dispatch) => ({",
+            "    ...bindActionCreators({ $3 }, dispatch)",
+            "})",
+            ""
+        ],
+        "description": "MIS: redux connect 的 mapStateToProps 和 mapDispatchToProps"
+    },
+    "Use Pagable": {
+        "prefix": "usepagable",
+        "body": [
+            "import React, { useEffect } from 'react'",
+            "import { Table, Form, Button, Input, Select } from 'antd'",
+            "import Header from '../../components/header/headerA'",
+            "import { usePagableTable } from '../../common/hooks'",
+            "",
+            "const columns = [",
+            "    {",
+            "        title: '姓名',",
+            "        dataIndex: '__name',",
+            "    },",
+            "]",
+            "",
+            "function $1(props) {",
+            "    const { form } = props",
+            "    const { getFieldDecorator } = form",
+            "    const { fetchPageData, tableProps, submit } = usePagableTable('/demo/url', form)",
+            "    ",
+            "    // 初次渲染获取数据",
+            "    useEffect(() => {",
+            "       fetchPageData({}, 1)",
+            "    }, [])",
+            "    ",
+            "    return (",
+            "        <div>",
+            "            <Header title=\"Demo\" />",
+            "            <Form layout=\"inline\" className=\"searchform\" onSubmit={submit}>",
+            "                <Form.Item label=\"姓名\">",
+            "                    {getFieldDecorator('__position', {})(",
+            "                        <Select placeholder=\"姓名\" style={{ width: 120 }}>",
+            "                            <Select.Option value=\"__1\">1</Select.Option>",
+            "                            <Select.Option value=\"__2\">2</Select.Option>",
+            "                            <Select.Option value=\"__3\">3</Select.Option>",
+            "                        </Select>,",
+            "                    )}",
+            "                </Form.Item>",
+            "                <Form.Item>",
+            "                    <Button type=\"primary\" htmlType=\"submit\">",
+            "                        查询",
+            "                    </Button>",
+            "                </Form.Item>",
+            "            </Form>",
+            "            <Table {...tableProps} rowKey={(record) => record.id} columns={columns} />",
+            "        </div>",
+            "    )",
+            "}",
+            "",
+            "export default Form.create()($1)",
+            ""
+        ],
+        "description": "MIS: 可翻页页面"
+    }
+}

@@ -30,7 +30,7 @@ const PROXY = {
     '172.16.32.202:8083': '学堂',
 }
 
-type CurrentProxy = {
+interface CurrentProxy {
     currentProxyIP: string
     currentProxyName: string
 }
