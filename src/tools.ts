@@ -27,25 +27,15 @@ export function addToolButton(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('misTools.selectStartModules', onSelectStartModules),
     )
-    vscode.languages.registerDocumentFormattingEditProvider('javascript', {
-        provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
-            return onFormat(document)
-        },
-    })
-    vscode.languages.registerDocumentFormattingEditProvider('html', {
-        provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
-            return onFormat(document)
-        },
-    })
-    vscode.languages.registerDocumentFormattingEditProvider('css', {
-        provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
-            return onFormat(document)
-        },
-    })
-    vscode.languages.registerDocumentFormattingEditProvider('json', {
-        provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
-            return onFormat(document)
-        },
+    ;['javascript', 'css', 'html', 'json'].forEach(language => {
+        vscode.languages.registerDocumentFormattingEditProvider(
+            { scheme: 'file', language },
+            {
+                provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
+                    return onFormat(document)
+                },
+            },
+        )
     })
 }
 
@@ -62,7 +52,7 @@ function onSelectTools() {
             detail: 'proxy',
         },
         {
-            label: '$(file-submodule) 选择默认启动模块',
+            label: '$(package) 选择默认启动模块',
             detail: 'modules',
         },
     ]
