@@ -1,0 +1,1 @@
+export const BABY_BLUE = '12345'
