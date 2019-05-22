@@ -11,7 +11,7 @@ const CONFIG_FILE = path.join(ROOTPATH, 'mis-web-react/config/.proxyrc.js')
 const PROXY = {
     'dohko.mis.tiaofangzi.com': 'Dohko',
     '172.16.32.31:8083': 'Release',
-    'www.tiaofangzi.com': 'Production',
+    'www.tiaofangzi.com': 'Prod',
     '172.16.32.228:8083': '裴鹏程',
     '172.16.32.199:8083': '黄林强',
     '172.16.33.23:8083': '杨淑婷',

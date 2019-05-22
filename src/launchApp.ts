@@ -53,6 +53,6 @@ export function updateLaunchBarItem(currentSelectedModules?: string) {
     }
     let currentProxyName = getCurrentProxy().currentProxyName
     let currentProxyIP = getCurrentProxy().currentProxyIP
-    launchBarItem.text = `$(rocket) 启动跳房子(${currentSelectedModules} : ${currentProxyName})`
+    launchBarItem.text = `$(rocket) 启动(${currentSelectedModules} : ${currentProxyName})`
     launchBarItem.tooltip = currentProxyIP
 }
