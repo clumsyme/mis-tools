@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://raw.githubusercontent.com/clumsyme/mis-tools/master/images/logo.png" />
-    <h1>跳房子开发相关工具</h1>
+    <h1>MIS 开发相关工具</h1>
 </div>
 
 ## 安装
@@ -13,6 +13,9 @@
   - 配置默认启动模块
 - 选择连接虚拟机
 - 格式化代码文件（[查看相关规则](#prettier自定义规则)）
+- 快速插入项目常用代码片段
+- 查看最新团队技术分享
+- 快速打开技术分享页面
 
 ## 参考
 

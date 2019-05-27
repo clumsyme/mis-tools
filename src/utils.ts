@@ -1,3 +1,5 @@
 import * as vscode from 'vscode'
 
-export const ROOTPATH = vscode.workspace.workspaceFolders[0].uri.fsPath
+const workspaceFolders = vscode.workspace.workspaceFolders
+
+export const ROOTPATH = workspaceFolders ? workspaceFolders[0].uri.fsPath : ''
