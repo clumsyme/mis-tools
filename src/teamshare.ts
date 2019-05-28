@@ -20,7 +20,7 @@ export function addShareButton(context: vscode.ExtensionContext) {
 }
 
 function onGotoIssues() {
-    let target = Uri.parse('http://git.hualala.com/liyan/video-player/issues/new')
+    let target = Uri.parse('http://git.hualala.com/liyan/teamshare/issues/new')
     env.openExternal(target)
 }
 
@@ -65,7 +65,7 @@ function updateRssUnread(unread: number): void {
 function fetchItems(): Promise<Parser.Item[]> {
     return new Promise((resolve) => {
         http.get(
-            'http://git.hualala.com/liyan/video-player/issues.atom',
+            'http://git.hualala.com/liyan/teamshare/issues.atom',
             {
                 method: 'GET',
                 headers: {
