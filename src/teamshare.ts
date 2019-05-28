@@ -7,7 +7,7 @@ let parser = new Parser()
 
 const { window, env, Uri } = vscode
 
-export let itemList: Parser.Item[] = []
+// export let itemList: Parser.Item[] = []
 
 export function addShareButton(context: vscode.ExtensionContext) {
     let shareButton = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 102)
@@ -20,27 +20,52 @@ export function addShareButton(context: vscode.ExtensionContext) {
 }
 
 function onGotoIssues() {
-    let target = Uri.parse('http://git.hualala.com/liyan/teamshare/issues/new')
+    let target = Uri.parse('http://git.hualala.com/liyan/video-player/issues/new')
     env.openExternal(target)
 }
 
+let rssButton: vscode.StatusBarItem
+let rssContext: vscode.ExtensionContext
 export function addRssButton(context: vscode.ExtensionContext) {
-    // itemList = context.workspaceState.get('rssItemList', [])
-    let rssButton = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 103)
+    rssContext = context
+    rssButton = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 103)
     rssButton.command = 'misTools.viewRss'
     rssButton.text = '$(rss) 最新'
     rssButton.show()
 
+
+    fetchAndUpdateUnread()
+    setInterval(fetchAndUpdateUnread, 600000)
+
     context.subscriptions.push(rssButton)
-    context.subscriptions.push(
-        vscode.commands.registerCommand('misTools.viewRss', onViewRss),
-    )
+    context.subscriptions.push(vscode.commands.registerCommand('misTools.viewRss', onViewRss))
 }
 
-function updateItemList() {
+function fetchAndUpdateUnread() {
+    fetchItems().then((feedItems) => {
+        let lastReadFeedDate = rssContext.globalState.get(
+            'lastReadFeedDate',
+            '2000-01-01T00:00:00.925Z',
+        )
+        let unread = feedItems.filter((item) => new Date(item.pubDate) > new Date(lastReadFeedDate))
+            .length
+
+        updateRssUnread(unread)
+    })
+}
+
+function updateRssUnread(unread: number): void {
+    if (unread) {
+        rssButton.text = `$(rss) 最新(${unread})`
+    } else {
+        rssButton.text = `$(rss) 最新`
+    }
+}
+
+function fetchItems(): Promise<Parser.Item[]> {
     return new Promise((resolve) => {
         http.get(
-            'http://git.hualala.com/liyan/teamshare/issues.atom',
+            'http://git.hualala.com/liyan/video-player/issues.atom',
             {
                 method: 'GET',
                 headers: {
@@ -54,27 +79,18 @@ function updateItemList() {
                 })
                 response.on('end', async () => {
                     let feed = await parser.parseString(data)
-                    itemList = feed.items
-                    resolve()
+                    resolve(feed.items || [])
                 })
             },
         )
     })
 }
 
-function onViewRss() {
-    let quickPick = window.createQuickPick()
-    updateItemList().then(() => {
-        quickPick.items = itemList.map((item) => {
-            let pubDate = new Date(item.pubDate)
-            return {
-                label: item.title,
-                description: `${item.author}: ${pubDate.toLocaleString()}`,
-                detail: item.link,
-            }
-        })
-    })
+async function onViewRss() {
+    updateRssUnread(0)
+    await rssContext.globalState.update('lastReadFeedDate', new Date().toString())
 
+    let quickPick = window.createQuickPick()
     quickPick.onDidAccept(function() {
         let selectedItem = quickPick.activeItems[0]
         if (selectedItem) {
@@ -82,6 +98,14 @@ function onViewRss() {
             env.openExternal(target)
         }
     })
-
     quickPick.show()
+    let feedItems = await fetchItems()
+    quickPick.items = feedItems.map((item) => {
+        let pubDate = new Date(item.pubDate)
+        return {
+            label: item.title,
+            description: `${item.author}: ${pubDate.toLocaleString()}`,
+            detail: item.link,
+        }
+    })
 }
