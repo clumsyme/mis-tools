@@ -3,9 +3,18 @@ import * as http from 'http'
 import * as Parser from 'rss-parser'
 import { BABY_BLUE } from './babyblue'
 
-let parser = new Parser()
+let parser = new Parser({
+    customFields: {
+        item: ['labels'],
+    },
+})
 
 const { window, env, Uri } = vscode
+
+// 最多弹窗提醒的新消息数量
+const MAX_NOTIFY_NUM = 3
+// 需要提醒的消息的 label
+const NOTIF_LABEL = '推送'
 
 // export let itemList: Parser.Item[] = []
 
@@ -33,7 +42,6 @@ export function addRssButton(context: vscode.ExtensionContext) {
     rssButton.text = '$(rss) 最新'
     rssButton.show()
 
-
     fetchAndUpdateUnread()
     setInterval(fetchAndUpdateUnread, 600000)
 
@@ -47,11 +55,47 @@ function fetchAndUpdateUnread() {
             'lastReadFeedDate',
             '2000-01-01T00:00:00.925Z',
         )
-        let unread = feedItems.filter((item) => new Date(item.pubDate) > new Date(lastReadFeedDate))
-            .length
+        let unreadItems = feedItems.filter(
+            (item) => new Date(item.pubDate) > new Date(lastReadFeedDate),
+        )
+        let unread = unreadItems.length
 
+        notify(unreadItems)
         updateRssUnread(unread)
     })
+}
+
+function notify(unreadItems: Parser.Item[]) {
+    let needNotifyItems = unreadItems.filter(isNeedNotifyItem).slice(0, MAX_NOTIFY_NUM)
+
+    rssContext.globalState.update('lastNotifyDate', new Date().toString())
+
+    needNotifyItems.forEach((item) => {
+        const { author, title, link } = item
+        vscode.window
+            .showInformationMessage(`${author} 分享了 ${title}`, '查看')
+            .then((selected) => {
+                if (selected === '查看') {
+                    let target = Uri.parse(link)
+                    env.openExternal(target)
+                }
+            })
+    })
+}
+
+function isNeedNotifyItem(item: Parser.Item) {
+    let lastNotifyDate = new Date(
+        rssContext.globalState.get('lastNotifyDate', '2000-01-01T00:00:00.925Z'),
+    )
+    const { pubDate, labels } = item
+    try {
+        return (
+            labels.label.some((label: string) => label === NOTIF_LABEL) &&
+            new Date(pubDate) > lastNotifyDate
+        )
+    } catch (error) {
+        return false
+    }
 }
 
 function updateRssUnread(unread: number): void {
@@ -79,6 +123,7 @@ function fetchItems(): Promise<Parser.Item[]> {
                 })
                 response.on('end', async () => {
                     let feed = await parser.parseString(data)
+                    console.warn(feed)
                     resolve(feed.items || [])
                 })
             },
