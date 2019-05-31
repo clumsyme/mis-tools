@@ -123,7 +123,6 @@ function fetchItems(): Promise<Parser.Item[]> {
                 })
                 response.on('end', async () => {
                     let feed = await parser.parseString(data)
-                    console.warn(feed)
                     resolve(feed.items || [])
                 })
             },
