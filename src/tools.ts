@@ -3,6 +3,7 @@ import * as prettier from 'prettier'
 import { onFormat, onManualFormat } from './format'
 import { onSelectProxy, onCustomProxy, getCurrentProxy } from './proxyConfig'
 import { onSelectStartModules } from './startModules'
+import { onStartJserver } from './jserver'
 
 const window = vscode.window
 
@@ -27,7 +28,7 @@ export function addToolButton(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('misTools.selectStartModules', onSelectStartModules),
     )
-    ;['javascript', 'css', 'html', 'json'].forEach(language => {
+    ;['javascript', 'css', 'html', 'json'].forEach((language) => {
         vscode.languages.registerDocumentFormattingEditProvider(
             { scheme: 'file', language },
             {
@@ -55,6 +56,10 @@ function onSelectTools() {
             label: '$(package) 选择默认启动模块',
             detail: 'modules',
         },
+        {
+            label: '$(server)  启动 json-server',
+            detail: 'jserver',
+        },
     ]
     quickPick.onDidAccept(function() {
         let selectedItem = quickPick.activeItems[0]
@@ -67,6 +72,9 @@ function onSelectTools() {
                 quickPick.dispose()
             } else if (selectedItem.detail === 'modules') {
                 onSelectStartModules()
+                quickPick.dispose()
+            } else if (selectedItem.detail === 'jserver') {
+                onStartJserver()
                 quickPick.dispose()
             }
         }

@@ -1,6 +1,7 @@
 import * as vscode from 'vscode'
 import { quickPickItems } from './startModules'
 import { getCurrentProxy } from './proxyConfig'
+import { showTerminal } from './utils'
 
 const window = vscode.window
 
@@ -31,16 +32,6 @@ function onLaunchApp() {
     }
     let terminal = showTerminal(NPM_TREMINAL_NAME)
     terminal.sendText(ternimalCommand)
-}
-
-function showTerminal(terminalName: string) {
-    let mainTerminal = window.terminals.filter((terminal) => terminal.name === terminalName)[0]
-    if (mainTerminal) {
-        mainTerminal.dispose()
-    }
-    mainTerminal = window.createTerminal(terminalName)
-    mainTerminal.show()
-    return mainTerminal
 }
 
 export function updateLaunchBarItem(currentSelectedModules?: string) {
