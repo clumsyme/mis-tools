@@ -19,7 +19,7 @@ const NOTIF_LABEL = '推送'
 // export let itemList: Parser.Item[] = []
 
 export function addShareButton(context: vscode.ExtensionContext) {
-    let shareButton = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 102)
+    let shareButton = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 1002)
     shareButton.command = 'misTools.gotoIssues'
     shareButton.text = '$(pencil) 分享'
     shareButton.show()
@@ -37,7 +37,7 @@ let rssButton: vscode.StatusBarItem
 let rssContext: vscode.ExtensionContext
 export function addRssButton(context: vscode.ExtensionContext) {
     rssContext = context
-    rssButton = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 103)
+    rssButton = window.createStatusBarItem(vscode.StatusBarAlignment.Right, 1003)
     rssButton.command = 'misTools.viewRss'
     rssButton.text = '$(rss) 最新'
     rssButton.show()
