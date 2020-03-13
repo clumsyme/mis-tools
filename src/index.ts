@@ -8,9 +8,9 @@ export function activate(context: vscode.ExtensionContext) {
     if (/.*[\/\\]mis-new[\/\\]?$/.test(ROOTPATH)) {
         addLaunchButton(context)
         addToolButton(context)
+        addShareButton(context)
+        addRssButton(context)
     }
-    addShareButton(context)
-    addRssButton(context)
 }
 
 // this method is called when your extension is deactivated
